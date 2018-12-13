@@ -1,6 +1,6 @@
+use failure::Error;
 use std::io::{Cursor, Read};
 use std::mem;
-use failure::Error;
 
 #[derive(Debug)]
 pub struct Parser<'a> {
@@ -20,13 +20,11 @@ impl<'a> Parser<'a> {
         Ok(buffer[0])
     }
 
-    pub fn read_u16(&mut self) -> Result<u16, Error> {
+    fn read_u16(&mut self) -> Result<u16, Error> {
         let mut buffer = [0; 2];
         self.buffer.read_exact(&mut buffer)?;
 
-        Ok(unsafe {
-            mem::transmute::<[u8; 2], u16>(buffer)
-        })
+        Ok(unsafe { mem::transmute::<[u8; 2], u16>(buffer) })
     }
 
     pub fn read_u16_be(&mut self) -> Result<u16, Error> {
@@ -37,14 +35,20 @@ impl<'a> Parser<'a> {
         let mut buffer = [0; 4];
         self.buffer.read_exact(&mut buffer)?;
 
-        Ok(unsafe {
-            mem::transmute::<[u8; 4], u32>(buffer)
-        }.to_be())
+        Ok(unsafe { mem::transmute::<[u8; 4], u32>(buffer) }.to_be())
     }
 
     pub fn read_length(&mut self, length: usize) -> Result<Vec<u8>, Error> {
         let mut buf = vec![0u8; length];
         self.buffer.read_exact(&mut buf)?;
         Ok(buf)
+    }
+
+    pub fn position(&self) -> u64 {
+        self.buffer.position()
+    }
+
+    pub fn set_position(&mut self, position: u64) {
+        self.buffer.set_position(position);
     }
 }
