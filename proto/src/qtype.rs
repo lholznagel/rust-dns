@@ -17,6 +17,7 @@ pub enum QType {
     MINFO,
     MX,
     TXT,
+    AAAA,
 }
 
 pub fn as_qtype(val: u16) -> QType {
@@ -37,6 +38,7 @@ pub fn as_qtype(val: u16) -> QType {
         14 => QType::MINFO,
         15 => QType::MX,
         16 => QType::TXT,
+        28 => QType::AAAA,
         // TODO: throw error
         _ => panic!("Unknown qtype"),
     }
@@ -60,5 +62,6 @@ pub fn as_u16(val: QType) -> u16 {
         QType::MINFO => 14,
         QType::MX => 15,
         QType::TXT => 16,
+        QType::AAAA => 28,
     }
 }

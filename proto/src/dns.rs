@@ -546,4 +546,142 @@ mod tests {
         let hex_vec = hex::encode(vector);
         assert_eq!(hex_vec, hex_query);
     }
+
+    #[test]
+    pub fn test_parse_query_play_google_aaaa() {
+        let hex_query = "8af00100000100000000000004706c617906676f6f676c6503636f6d00001c0001";
+        let hex_query = hex::decode(hex_query).unwrap();
+        let dns = DNS::new(hex_query).unwrap();
+
+        assert_eq!(
+            dns,
+            DNS {
+                id: 35568,
+                qr: 0,
+                opcode: 0,
+                aa: 0,
+                tc: 0,
+                rd: 1,
+                ra: 0,
+                z: 0,
+                rcode: 0,
+                qdcount: 1,
+                ancount: 0,
+                nscount: 0,
+                arcount: 0,
+                questions: vec![Question {
+                    qname: String::from("play.google.com"),
+                    qtype: QType::AAAA,
+                    qclass: QClass::IN
+                }],
+                resource_records: Vec::new()
+            }
+        );
+    }
+
+    #[test]
+    pub fn test_parse_response_play_google_aaaa() {
+        let hex_query = "8af08180000100010000000004706c617906676f6f676c6503636f6d00001c0001c00c001c00010000006c00102a00145040010815000000000000200e";
+        let hex_query = hex::decode(hex_query).unwrap();
+        let dns = DNS::new(hex_query).unwrap();
+
+        assert_eq!(
+            dns,
+            DNS {
+                id: 35568,
+                qr: 1,
+                opcode: 0,
+                aa: 0,
+                tc: 0,
+                rd: 1,
+                ra: 1,
+                z: 0,
+                rcode: 0,
+                qdcount: 1,
+                ancount: 1,
+                nscount: 0,
+                arcount: 0,
+                questions: vec![Question {
+                    qname: String::from("play.google.com"),
+                    qtype: QType::AAAA,
+                    qclass: QClass::IN
+                }],
+                resource_records: vec![ResourceRecord {
+                    name: String::from("play.google.com"),
+                    rtype: QType::AAAA,
+                    rclass: QClass::IN,
+                    ttl: 108,
+                    rdlength: 16,
+                    rdata: vec![42, 0, 20, 80, 64, 1, 8, 21, 0, 0, 0, 0, 0, 0, 32, 14]
+                }]
+            }
+        );
+    }
+
+    #[test]
+    pub fn test_build_query_play_google_aaaa() {
+        let vector = DNS {
+            id: 35568,
+            qr: 0,
+            opcode: 0,
+            aa: 0,
+            tc: 0,
+            rd: 1,
+            ra: 0,
+            z: 0,
+            rcode: 0,
+            qdcount: 1,
+            ancount: 0,
+            nscount: 0,
+            arcount: 0,
+            questions: vec![Question {
+                qname: String::from("play.google.com"),
+                qtype: QType::AAAA,
+                qclass: QClass::IN,
+            }],
+            resource_records: Vec::new(),
+        }
+        .build();
+
+        let hex_query = "8af00100000100000000000004706c617906676f6f676c6503636f6d00001c0001";
+        let hex_vec = hex::encode(vector);
+        assert_eq!(hex_vec, hex_query);
+    }
+
+    #[test]
+    pub fn test_build_response_play_google_aaaa() {
+        let vector = DNS {
+            id: 35568,
+            qr: 1,
+            opcode: 0,
+            aa: 0,
+            tc: 0,
+            rd: 1,
+            ra: 1,
+            z: 0,
+            rcode: 0,
+            qdcount: 1,
+            ancount: 1,
+            nscount: 0,
+            arcount: 0,
+            questions: vec![Question {
+                qname: String::from("play.google.com"),
+                qtype: QType::AAAA,
+                qclass: QClass::IN,
+            }],
+            resource_records: vec![ResourceRecord {
+                name: String::from("play.google.com"),
+                rtype: QType::AAAA,
+                rclass: QClass::IN,
+                ttl: 108,
+                rdlength: 16,
+                rdata: vec![42, 0, 20, 80, 64, 1, 8, 21, 0, 0, 0, 0, 0, 0, 32, 14],
+            }],
+        }
+        .build();
+
+        let hex_query = "8af08180000100010000000004706c617906676f6f676c6503636f6d00001c0001c00c001c00010000006c00102a00145040010815000000000000200e";
+        let hex_vec = hex::encode(vector);
+        assert_eq!(hex_vec, hex_query);
+    }
 }
