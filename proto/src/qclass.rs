@@ -11,3 +11,9 @@ pub fn as_qclass(val: u16) -> QClass {
         _ => panic!("Unknown qtype"),
     }
 }
+
+pub fn as_u16(val: QClass) -> u16 {
+    match val {
+        QClass::IN => 1,
+    }
+}

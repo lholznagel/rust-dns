@@ -41,3 +41,24 @@ pub fn as_qtype(val: u16) -> QType {
         _ => panic!("Unknown qtype"),
     }
 }
+
+pub fn as_u16(val: QType) -> u16 {
+    match val {
+        QType::A => 1,
+        QType::NS => 2,
+        QType::MD => 3,
+        QType::MF => 4,
+        QType::CNAME => 5,
+        QType::SOA => 6,
+        QType::MB => 7,
+        QType::MG => 8,
+        QType::MR => 9,
+        QType::NULL => 10,
+        QType::WKS => 11,
+        QType::PTR => 12,
+        QType::HINFO => 13,
+        QType::MINFO => 14,
+        QType::MX => 15,
+        QType::TXT => 16,
+    }
+}
