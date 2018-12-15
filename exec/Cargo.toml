@@ -1,0 +1,10 @@
+[package]
+name = "exec"
+version = "0.1.0"
+authors = ["lholznagel <contact@lholznagel.info>"]
+edition = "2018"
+
+[dependencies]
+failure = "0.1.3"
+rdns_proto = { path = "../proto" }
+yaml-rust = "0.4.2"

@@ -4,5 +4,6 @@ panic = 'abort'
 
 [workspace]
 members = [
+  "exec",
   "proto"
 ]
