@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+#[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
 pub enum QClass {
     IN,
 }

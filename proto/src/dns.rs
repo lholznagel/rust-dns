@@ -6,14 +6,14 @@ use crate::writer::Writer;
 
 use failure::Error;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct Question {
     pub qname: String,
     pub qtype: QType,
     pub qclass: QClass,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct ResourceRecord {
     name: String,
     rtype: QType,
@@ -23,7 +23,7 @@ pub struct ResourceRecord {
     rdata: Vec<u8>,
 }
 
-#[derive(Clone, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Debug, Default, Hash, Eq, PartialEq)]
 pub struct DNS {
     pub id: u16,
     pub qr: u8,
