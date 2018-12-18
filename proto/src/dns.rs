@@ -36,14 +36,14 @@ pub struct DNS {
     pub rcode: u8,
     pub qdcount: u16,
     pub ancount: u16,
-    pub nscount: u16,
-    pub arcount: u16,
+    pub nscount: u16, // currently ignored
+    pub arcount: u16, // currently ignored
     pub questions: Vec<Question>,
     pub resource_records: Vec<ResourceRecord>,
 }
 
 impl DNS {
-    pub fn new(byte_arr: Vec<u8>) -> Result<Self, Error> {
+    pub fn parse(byte_arr: Vec<u8>) -> Result<Self, Error> {
         let mut reader = Reader::new(&byte_arr);
         let id = reader.read_u16_be()?;
 
@@ -239,7 +239,7 @@ mod tests {
     pub fn test_parse_query_google() {
         let hex_query = "349e010000010000000000000377777706676f6f676c650264650000010001";
         let hex_query = hex::decode(hex_query).unwrap();
-        let dns = DNS::new(hex_query).unwrap();
+        let dns = DNS::parse(hex_query).unwrap();
 
         assert_eq!(
             dns,
@@ -271,7 +271,7 @@ mod tests {
     pub fn test_parse_response_google() {
         let hex_response = "349e818000010001000000000377777706676f6f676c650264650000010001c00c00010001000000ee0004acd9a8c3";
         let hex_query = hex::decode(hex_response).unwrap();
-        let dns = DNS::new(hex_query).unwrap();
+        let dns = DNS::parse(hex_query).unwrap();
 
         assert_eq!(
             dns,
@@ -377,7 +377,7 @@ mod tests {
     pub fn test_parse_query_github() {
         let hex_query = "224c01000001000000000000037777770667697468756203636f6d0000010001";
         let hex_query = hex::decode(hex_query).unwrap();
-        let dns = DNS::new(hex_query).unwrap();
+        let dns = DNS::parse(hex_query).unwrap();
 
         assert_eq!(
             dns,
@@ -409,7 +409,7 @@ mod tests {
     pub fn test_parse_response_github() {
         let hex_response = "224c81800001000300000000037777770667697468756203636f6d0000010001c00c00050001000004930002c010c010000100010000003b0004c01efd71c010000100010000003b0004c01efd70";
         let hex_query = hex::decode(hex_response).unwrap();
-        let dns = DNS::new(hex_query).unwrap();
+        let dns = DNS::parse(hex_query).unwrap();
 
         assert_eq!(
             dns,
@@ -551,7 +551,7 @@ mod tests {
     pub fn test_parse_query_play_google_aaaa() {
         let hex_query = "8af00100000100000000000004706c617906676f6f676c6503636f6d00001c0001";
         let hex_query = hex::decode(hex_query).unwrap();
-        let dns = DNS::new(hex_query).unwrap();
+        let dns = DNS::parse(hex_query).unwrap();
 
         assert_eq!(
             dns,
@@ -583,7 +583,7 @@ mod tests {
     pub fn test_parse_response_play_google_aaaa() {
         let hex_query = "8af08180000100010000000004706c617906676f6f676c6503636f6d00001c0001c00c001c00010000006c00102a00145040010815000000000000200e";
         let hex_query = hex::decode(hex_query).unwrap();
-        let dns = DNS::new(hex_query).unwrap();
+        let dns = DNS::parse(hex_query).unwrap();
 
         assert_eq!(
             dns,

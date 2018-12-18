@@ -35,7 +35,7 @@ version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "exec"
+name = "daemon"
 version = "0.1.0"
 dependencies = [
  "failure 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",

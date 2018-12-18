@@ -1,0 +1,1159 @@
+desc: (none)
+cmd: target/debug/daemon
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=786696
+mem_heap_B=552
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=930549
+mem_heap_B=1816
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=detailed
+n4: 1816 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1024 0x493678F: _IO_file_doallocate (in /usr/lib/libc-2.28.so)
+  n1: 1024 0x4944BBE: _IO_doallocbuf (in /usr/lib/libc-2.28.so)
+   n1: 1024 0x4943C03: _IO_file_underflow@@GLIBC_2.2.5 (in /usr/lib/libc-2.28.so)
+    n1: 1024 0x4937F46: getdelim (in /usr/lib/libc-2.28.so)
+     n1: 1024 0x48948E2: pthread_getattr_np (in /usr/lib/libpthread-2.28.so)
+      n1: 1024 0x227EDA: std::sys::unix::thread::guard::init (thread.rs:278)
+       n1: 1024 0x2259B4: std::rt::lang_start_internal (rt.rs:43)
+        n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+         n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 552 0x493719E: __fopen_internal (in /usr/lib/libc-2.28.so)
+  n1: 552 0x4894832: pthread_getattr_np (in /usr/lib/libpthread-2.28.so)
+   n1: 552 0x227EDA: std::sys::unix::thread::guard::init (thread.rs:278)
+    n1: 552 0x2259B4: std::rt::lang_start_internal (rt.rs:43)
+     n1: 552 0x12A297: std::rt::lang_start (rt.rs:74)
+      n0: 552 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 240 0x4937D9F: getdelim (in /usr/lib/libc-2.28.so)
+  n1: 240 0x48948E2: pthread_getattr_np (in /usr/lib/libpthread-2.28.so)
+   n1: 240 0x227EDA: std::sys::unix::thread::guard::init (thread.rs:278)
+    n1: 240 0x2259B4: std::rt::lang_start_internal (rt.rs:43)
+     n1: 240 0x12A297: std::rt::lang_start (rt.rs:74)
+      n0: 240 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=3
+#-----------
+time=1031842
+mem_heap_B=19599
+mem_heap_extra_B=201
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=1148848
+mem_heap_B=19759
+mem_heap_extra_B=225
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=1287211
+mem_heap_B=21579
+mem_heap_extra_B=357
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=1362152
+mem_heap_B=27575
+mem_heap_extra_B=425
+mem_stacks_B=0
+heap_tree=detailed
+n5: 27575 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 22528 0x13FD6A: alloc::alloc::alloc (alloc.rs:82)
+  n2: 22528 0x13FBD0: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 14336 0x12278E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 14336 0x12125D: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 14336 0x122A28: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 14336 0x13A566: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 14336 0x137636: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 14336 0x12CB50: daemon::main (main.rs:31)
+         n1: 14336 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 14336 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 14336 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 14336 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 14336 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 14336 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n2: 8192 0x12223E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 4096 0x1214AD: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 4096 0x122B98: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 4096 0x13A466: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 4096 0x137696: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 4096 0x12CB2D: daemon::main (main.rs:30)
+         n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+    n1: 4096 0x121D58: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized (table.rs:721)
+     n1: 4096 0x128976: <std::collections::hash::table::RawTable<K, V> as core::clone::Clone>::clone (table.rs:1090)
+      n1: 4096 0x133389: <std::collections::hash::map::HashMap<K, V, S> as core::clone::Clone>::clone (map.rs:420)
+       n1: 4096 0x12E994: daemon::main (main.rs:95)
+        n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+         n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+          n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+           n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+            n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+             n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n2: 1832 0x1721AA: alloc::alloc::alloc (alloc.rs:82)
+  n1: 1536 0x171F90: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 1536 0x170E70: <alloc::raw_vec::RawVec<T, A>>::allocate_in (raw_vec.rs:106)
+    n1: 1536 0x170CB4: <alloc::raw_vec::RawVec<T>>::with_capacity (raw_vec.rs:150)
+     n1: 1536 0x178A92: <alloc::vec::Vec<T>>::with_capacity (vec.rs:368)
+      n1: 1536 0x16FF47: mio::sys::unix::epoll::Events::with_capacity (epoll.rs:189)
+       n1: 1536 0x16C6E6: mio::poll::Events::with_capacity (poll.rs:1359)
+        n1: 1536 0x12D650: daemon::main (main.rs:44)
+         n1: 1536 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 1536 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 1536 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 1536 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 1536 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 1536 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+  n1: 296 0x172118: alloc::alloc::exchange_malloc (alloc.rs:192)
+   n0: 296 in 5 places, all below massif's threshold (1.00%)
+ n1: 1507 0x497EFE6: __tzfile_read (in /usr/lib/libc-2.28.so)
+  n1: 1507 0x497E95F: tzset_internal (in /usr/lib/libc-2.28.so)
+   n1: 1507 0x497EBA8: __tz_convert (in /usr/lib/libc-2.28.so)
+    n1: 1507 0x152705: time::sys::inner::time_to_local_tm (sys.rs:433)
+     n1: 1507 0x14C717: time::at (lib.rs:419)
+      n1: 1507 0x14C782: time::now (lib.rs:426)
+       n1: 1507 0x148F16: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:96)
+        n1: 1507 0x17D2CE: log::__private_api_log (lib.rs:1232)
+         n1: 1507 0x12CFDE: daemon::main (main.rs:36)
+          n1: 1507 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+           n1: 1507 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+            n1: 1507 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+             n1: 1507 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+              n1: 1507 0x12A297: std::rt::lang_start (rt.rs:74)
+               n0: 1507 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 1024 0x21B8E5: std::io::stdio::stdout (alloc.rs:82)
+  n1: 1024 0x21C746: std::io::stdio::_print (stdio.rs:694)
+   n1: 1024 0x149125: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:94)
+    n1: 1024 0x17D2CE: log::__private_api_log (lib.rs:1232)
+     n1: 1024 0x12CFDE: daemon::main (main.rs:36)
+      n1: 1024 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+       n1: 1024 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+        n1: 1024 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+         n1: 1024 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+          n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+           n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 684 in 32 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=7
+#-----------
+time=1893298
+mem_heap_B=23533
+mem_heap_extra_B=435
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=2016788
+mem_heap_B=27631
+mem_heap_extra_B=449
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=2113516
+mem_heap_B=27734
+mem_heap_extra_B=498
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=2243112
+mem_heap_B=27895
+mem_heap_extra_B=513
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=2335285
+mem_heap_B=23580
+mem_heap_extra_B=484
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=2445348
+mem_heap_B=23737
+mem_heap_extra_B=559
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=2512491
+mem_heap_B=28049
+mem_heap_extra_B=655
+mem_stacks_B=0
+heap_tree=peak
+n5: 28049 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 22672 0x13FD6A: alloc::alloc::alloc (alloc.rs:82)
+  n3: 22672 0x13FBD0: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 14336 0x12278E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 14336 0x12125D: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 14336 0x122A28: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 14336 0x13A566: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 14336 0x137636: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 14336 0x12CB50: daemon::main (main.rs:31)
+         n1: 14336 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 14336 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 14336 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 14336 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 14336 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 14336 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n2: 8192 0x12223E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 4096 0x1214AD: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 4096 0x122B98: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 4096 0x13A466: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 4096 0x137696: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 4096 0x12CB2D: daemon::main (main.rs:30)
+         n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+    n1: 4096 0x121D58: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized (table.rs:721)
+     n1: 4096 0x128976: <std::collections::hash::table::RawTable<K, V> as core::clone::Clone>::clone (table.rs:1090)
+      n1: 4096 0x133389: <std::collections::hash::map::HashMap<K, V, S> as core::clone::Clone>::clone (map.rs:420)
+       n1: 4096 0x12E994: daemon::main (main.rs:95)
+        n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+         n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+          n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+           n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+            n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+             n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n0: 144 in 2 places, all below massif's threshold (1.00%)
+ n2: 1832 0x1721AA: alloc::alloc::alloc (alloc.rs:82)
+  n1: 1536 0x171F90: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 1536 0x170E70: <alloc::raw_vec::RawVec<T, A>>::allocate_in (raw_vec.rs:106)
+    n1: 1536 0x170CB4: <alloc::raw_vec::RawVec<T>>::with_capacity (raw_vec.rs:150)
+     n1: 1536 0x178A92: <alloc::vec::Vec<T>>::with_capacity (vec.rs:368)
+      n1: 1536 0x16FF47: mio::sys::unix::epoll::Events::with_capacity (epoll.rs:189)
+       n1: 1536 0x16C6E6: mio::poll::Events::with_capacity (poll.rs:1359)
+        n1: 1536 0x12D650: daemon::main (main.rs:44)
+         n1: 1536 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 1536 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 1536 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 1536 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 1536 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 1536 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+  n1: 296 0x172118: alloc::alloc::exchange_malloc (alloc.rs:192)
+   n0: 296 in 5 places, all below massif's threshold (1.00%)
+ n1: 1507 0x497EFE6: __tzfile_read (in /usr/lib/libc-2.28.so)
+  n1: 1507 0x497E95F: tzset_internal (in /usr/lib/libc-2.28.so)
+   n1: 1507 0x497EBA8: __tz_convert (in /usr/lib/libc-2.28.so)
+    n1: 1507 0x152705: time::sys::inner::time_to_local_tm (sys.rs:433)
+     n1: 1507 0x14C717: time::at (lib.rs:419)
+      n1: 1507 0x14C782: time::now (lib.rs:426)
+       n1: 1507 0x148F16: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:96)
+        n1: 1507 0x17D2CE: log::__private_api_log (lib.rs:1232)
+         n1: 1507 0x12CFDE: daemon::main (main.rs:36)
+          n1: 1507 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+           n1: 1507 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+            n1: 1507 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+             n1: 1507 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+              n1: 1507 0x12A297: std::rt::lang_start (rt.rs:74)
+               n0: 1507 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 1024 0x21B8E5: std::io::stdio::stdout (alloc.rs:82)
+  n1: 1024 0x21C746: std::io::stdio::_print (stdio.rs:694)
+   n1: 1024 0x149125: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:94)
+    n1: 1024 0x17D2CE: log::__private_api_log (lib.rs:1232)
+     n1: 1024 0x12CFDE: daemon::main (main.rs:36)
+      n1: 1024 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+       n1: 1024 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+        n1: 1024 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+         n1: 1024 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+          n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+           n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 1014 in 35 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=14
+#-----------
+time=2612834
+mem_heap_B=23565
+mem_heap_extra_B=475
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=2755088
+mem_heap_B=23619
+mem_heap_extra_B=493
+mem_stacks_B=0
+heap_tree=detailed
+n5: 23619 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 18488 0x13FD6A: alloc::alloc::alloc (alloc.rs:82)
+  n3: 18488 0x13FBD0: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 14336 0x12278E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 14336 0x12125D: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 14336 0x122A28: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 14336 0x13A566: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 14336 0x137636: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 14336 0x12CB50: daemon::main (main.rs:31)
+         n1: 14336 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 14336 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 14336 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 14336 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 14336 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 14336 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n2: 4096 0x12223E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 4096 0x1214AD: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 4096 0x122B98: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 4096 0x13A466: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 4096 0x137696: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 4096 0x12CB2D: daemon::main (main.rs:30)
+         n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+   n0: 56 in 2 places, all below massif's threshold (1.00%)
+ n2: 1832 0x1721AA: alloc::alloc::alloc (alloc.rs:82)
+  n1: 1536 0x171F90: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 1536 0x170E70: <alloc::raw_vec::RawVec<T, A>>::allocate_in (raw_vec.rs:106)
+    n1: 1536 0x170CB4: <alloc::raw_vec::RawVec<T>>::with_capacity (raw_vec.rs:150)
+     n1: 1536 0x178A92: <alloc::vec::Vec<T>>::with_capacity (vec.rs:368)
+      n1: 1536 0x16FF47: mio::sys::unix::epoll::Events::with_capacity (epoll.rs:189)
+       n1: 1536 0x16C6E6: mio::poll::Events::with_capacity (poll.rs:1359)
+        n1: 1536 0x12D650: daemon::main (main.rs:44)
+         n1: 1536 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 1536 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 1536 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 1536 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 1536 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 1536 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+  n1: 296 0x172118: alloc::alloc::exchange_malloc (alloc.rs:192)
+   n0: 296 in 5 places, all below massif's threshold (1.00%)
+ n1: 1507 0x497EFE6: __tzfile_read (in /usr/lib/libc-2.28.so)
+  n1: 1507 0x497E95F: tzset_internal (in /usr/lib/libc-2.28.so)
+   n1: 1507 0x497EBA8: __tz_convert (in /usr/lib/libc-2.28.so)
+    n1: 1507 0x152705: time::sys::inner::time_to_local_tm (sys.rs:433)
+     n1: 1507 0x14C717: time::at (lib.rs:419)
+      n1: 1507 0x14C782: time::now (lib.rs:426)
+       n1: 1507 0x148F16: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:96)
+        n1: 1507 0x17D2CE: log::__private_api_log (lib.rs:1232)
+         n1: 1507 0x12CFDE: daemon::main (main.rs:36)
+          n1: 1507 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+           n1: 1507 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+            n1: 1507 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+             n1: 1507 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+              n1: 1507 0x12A297: std::rt::lang_start (rt.rs:74)
+               n0: 1507 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 1024 0x21B8E5: std::io::stdio::stdout (alloc.rs:82)
+  n1: 1024 0x21C746: std::io::stdio::_print (stdio.rs:694)
+   n1: 1024 0x149125: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:94)
+    n1: 1024 0x17D2CE: log::__private_api_log (lib.rs:1232)
+     n1: 1024 0x12CFDE: daemon::main (main.rs:36)
+      n1: 1024 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+       n1: 1024 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+        n1: 1024 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+         n1: 1024 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+          n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+           n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 768 in 35 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=16
+#-----------
+time=2842512
+mem_heap_B=23694
+mem_heap_extra_B=546
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=2972399
+mem_heap_B=28011
+mem_heap_extra_B=653
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=3057620
+mem_heap_B=23619
+mem_heap_extra_B=493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=3189283
+mem_heap_B=27922
+mem_heap_extra_B=654
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=3278985
+mem_heap_B=28007
+mem_heap_extra_B=617
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=3343728
+mem_heap_B=23619
+mem_heap_extra_B=493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=3440595
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=3555069
+mem_heap_B=27997
+mem_heap_extra_B=667
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=3664778
+mem_heap_B=23633
+mem_heap_extra_B=511
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=3775482
+mem_heap_B=27939
+mem_heap_extra_B=653
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=3843065
+mem_heap_B=28007
+mem_heap_extra_B=617
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=3921222
+mem_heap_B=23645
+mem_heap_extra_B=531
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=3992979
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=detailed
+n5: 27790 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 22640 0x13FD6A: alloc::alloc::alloc (alloc.rs:82)
+  n3: 22640 0x13FBD0: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 14336 0x12278E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 14336 0x12125D: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 14336 0x122A28: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 14336 0x13A566: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 14336 0x137636: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 14336 0x12CB50: daemon::main (main.rs:31)
+         n1: 14336 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 14336 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 14336 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 14336 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 14336 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 14336 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n2: 8192 0x12223E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 4096 0x1214AD: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 4096 0x122B98: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 4096 0x13A466: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 4096 0x137696: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 4096 0x12CB2D: daemon::main (main.rs:30)
+         n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+    n1: 4096 0x121D58: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized (table.rs:721)
+     n1: 4096 0x128976: <std::collections::hash::table::RawTable<K, V> as core::clone::Clone>::clone (table.rs:1090)
+      n1: 4096 0x133389: <std::collections::hash::map::HashMap<K, V, S> as core::clone::Clone>::clone (map.rs:420)
+       n1: 4096 0x12E994: daemon::main (main.rs:95)
+        n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+         n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+          n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+           n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+            n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+             n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n0: 112 in 2 places, all below massif's threshold (1.00%)
+ n2: 1832 0x1721AA: alloc::alloc::alloc (alloc.rs:82)
+  n1: 1536 0x171F90: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 1536 0x170E70: <alloc::raw_vec::RawVec<T, A>>::allocate_in (raw_vec.rs:106)
+    n1: 1536 0x170CB4: <alloc::raw_vec::RawVec<T>>::with_capacity (raw_vec.rs:150)
+     n1: 1536 0x178A92: <alloc::vec::Vec<T>>::with_capacity (vec.rs:368)
+      n1: 1536 0x16FF47: mio::sys::unix::epoll::Events::with_capacity (epoll.rs:189)
+       n1: 1536 0x16C6E6: mio::poll::Events::with_capacity (poll.rs:1359)
+        n1: 1536 0x12D650: daemon::main (main.rs:44)
+         n1: 1536 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 1536 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 1536 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 1536 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 1536 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 1536 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+  n1: 296 0x172118: alloc::alloc::exchange_malloc (alloc.rs:192)
+   n0: 296 in 5 places, all below massif's threshold (1.00%)
+ n1: 1507 0x497EFE6: __tzfile_read (in /usr/lib/libc-2.28.so)
+  n1: 1507 0x497E95F: tzset_internal (in /usr/lib/libc-2.28.so)
+   n1: 1507 0x497EBA8: __tz_convert (in /usr/lib/libc-2.28.so)
+    n1: 1507 0x152705: time::sys::inner::time_to_local_tm (sys.rs:433)
+     n1: 1507 0x14C717: time::at (lib.rs:419)
+      n1: 1507 0x14C782: time::now (lib.rs:426)
+       n1: 1507 0x148F16: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:96)
+        n1: 1507 0x17D2CE: log::__private_api_log (lib.rs:1232)
+         n1: 1507 0x12CFDE: daemon::main (main.rs:36)
+          n1: 1507 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+           n1: 1507 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+            n1: 1507 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+             n1: 1507 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+              n1: 1507 0x12A297: std::rt::lang_start (rt.rs:74)
+               n0: 1507 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 1024 0x21B8E5: std::io::stdio::stdout (alloc.rs:82)
+  n1: 1024 0x21C746: std::io::stdio::_print (stdio.rs:694)
+   n1: 1024 0x149125: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:94)
+    n1: 1024 0x17D2CE: log::__private_api_log (lib.rs:1232)
+     n1: 1024 0x12CFDE: daemon::main (main.rs:36)
+      n1: 1024 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+       n1: 1024 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+        n1: 1024 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+         n1: 1024 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+          n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+           n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 787 in 35 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=29
+#-----------
+time=4099912
+mem_heap_B=28055
+mem_heap_extra_B=625
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=4181857
+mem_heap_B=23622
+mem_heap_extra_B=514
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=4267921
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=4347238
+mem_heap_B=28068
+mem_heap_extra_B=636
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=4416667
+mem_heap_B=27661
+mem_heap_extra_B=483
+mem_stacks_B=0
+heap_tree=detailed
+n5: 27661 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 22584 0x13FD6A: alloc::alloc::alloc (alloc.rs:82)
+  n3: 22584 0x13FBD0: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 14336 0x12278E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 14336 0x12125D: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 14336 0x122A28: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 14336 0x13A566: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 14336 0x137636: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 14336 0x12CB50: daemon::main (main.rs:31)
+         n1: 14336 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 14336 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 14336 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 14336 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 14336 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 14336 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n2: 8192 0x12223E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 4096 0x1214AD: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 4096 0x122B98: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 4096 0x13A466: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 4096 0x137696: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 4096 0x12CB2D: daemon::main (main.rs:30)
+         n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+    n1: 4096 0x121D58: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized (table.rs:721)
+     n1: 4096 0x128976: <std::collections::hash::table::RawTable<K, V> as core::clone::Clone>::clone (table.rs:1090)
+      n1: 4096 0x133389: <std::collections::hash::map::HashMap<K, V, S> as core::clone::Clone>::clone (map.rs:420)
+       n1: 4096 0x12E994: daemon::main (main.rs:95)
+        n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+         n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+          n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+           n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+            n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+             n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n0: 56 in 2 places, all below massif's threshold (1.00%)
+ n2: 1832 0x1721AA: alloc::alloc::alloc (alloc.rs:82)
+  n1: 1536 0x171F90: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 1536 0x170E70: <alloc::raw_vec::RawVec<T, A>>::allocate_in (raw_vec.rs:106)
+    n1: 1536 0x170CB4: <alloc::raw_vec::RawVec<T>>::with_capacity (raw_vec.rs:150)
+     n1: 1536 0x178A92: <alloc::vec::Vec<T>>::with_capacity (vec.rs:368)
+      n1: 1536 0x16FF47: mio::sys::unix::epoll::Events::with_capacity (epoll.rs:189)
+       n1: 1536 0x16C6E6: mio::poll::Events::with_capacity (poll.rs:1359)
+        n1: 1536 0x12D650: daemon::main (main.rs:44)
+         n1: 1536 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 1536 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 1536 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 1536 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 1536 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 1536 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+  n1: 296 0x172118: alloc::alloc::exchange_malloc (alloc.rs:192)
+   n0: 296 in 5 places, all below massif's threshold (1.00%)
+ n1: 1507 0x497EFE6: __tzfile_read (in /usr/lib/libc-2.28.so)
+  n1: 1507 0x497E95F: tzset_internal (in /usr/lib/libc-2.28.so)
+   n1: 1507 0x497EBA8: __tz_convert (in /usr/lib/libc-2.28.so)
+    n1: 1507 0x152705: time::sys::inner::time_to_local_tm (sys.rs:433)
+     n1: 1507 0x14C717: time::at (lib.rs:419)
+      n1: 1507 0x14C782: time::now (lib.rs:426)
+       n1: 1507 0x148F16: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:96)
+        n1: 1507 0x17D2CE: log::__private_api_log (lib.rs:1232)
+         n1: 1507 0x12CFDE: daemon::main (main.rs:36)
+          n1: 1507 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+           n1: 1507 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+            n1: 1507 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+             n1: 1507 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+              n1: 1507 0x12A297: std::rt::lang_start (rt.rs:74)
+               n0: 1507 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 1024 0x21B8E5: std::io::stdio::stdout (alloc.rs:82)
+  n1: 1024 0x21C746: std::io::stdio::_print (stdio.rs:694)
+   n1: 1024 0x149125: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:94)
+    n1: 1024 0x17D2CE: log::__private_api_log (lib.rs:1232)
+     n1: 1024 0x12CFDE: daemon::main (main.rs:36)
+      n1: 1024 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+       n1: 1024 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+        n1: 1024 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+         n1: 1024 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+          n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+           n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 714 in 35 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=34
+#-----------
+time=4526095
+mem_heap_B=23633
+mem_heap_extra_B=511
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=4596988
+mem_heap_B=27952
+mem_heap_extra_B=640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=4708082
+mem_heap_B=23565
+mem_heap_extra_B=475
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=4852105
+mem_heap_B=27914
+mem_heap_extra_B=638
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=4995250
+mem_heap_B=23565
+mem_heap_extra_B=475
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=5108639
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=5200616
+mem_heap_B=28122
+mem_heap_extra_B=662
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=5310106
+mem_heap_B=23619
+mem_heap_extra_B=493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=5406973
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=5543895
+mem_heap_B=27766
+mem_heap_extra_B=538
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=5626527
+mem_heap_B=23633
+mem_heap_extra_B=511
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=5762257
+mem_heap_B=28100
+mem_heap_extra_B=636
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=5829327
+mem_heap_B=27661
+mem_heap_extra_B=483
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=5932510
+mem_heap_B=23652
+mem_heap_extra_B=532
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=6032870
+mem_heap_B=28068
+mem_heap_extra_B=636
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=6080806
+mem_heap_B=28019
+mem_heap_extra_B=605
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=6128863
+mem_heap_B=23619
+mem_heap_extra_B=493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=6183363
+mem_heap_B=23635
+mem_heap_extra_B=533
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=6233684
+mem_heap_B=27822
+mem_heap_extra_B=562
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=6283599
+mem_heap_B=27939
+mem_heap_extra_B=653
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=6331957
+mem_heap_B=28074
+mem_heap_extra_B=654
+mem_stacks_B=0
+heap_tree=detailed
+n5: 28074 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 22728 0x13FD6A: alloc::alloc::alloc (alloc.rs:82)
+  n3: 22728 0x13FBD0: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 14336 0x12278E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 14336 0x12125D: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 14336 0x122A28: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 14336 0x13A566: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 14336 0x137636: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 14336 0x12CB50: daemon::main (main.rs:31)
+         n1: 14336 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 14336 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 14336 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 14336 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 14336 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 14336 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n2: 8192 0x12223E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 4096 0x1214AD: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 4096 0x122B98: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 4096 0x13A466: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 4096 0x137696: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 4096 0x12CB2D: daemon::main (main.rs:30)
+         n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+    n1: 4096 0x121D58: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized (table.rs:721)
+     n1: 4096 0x128976: <std::collections::hash::table::RawTable<K, V> as core::clone::Clone>::clone (table.rs:1090)
+      n1: 4096 0x133389: <std::collections::hash::map::HashMap<K, V, S> as core::clone::Clone>::clone (map.rs:420)
+       n1: 4096 0x12E994: daemon::main (main.rs:95)
+        n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+         n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+          n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+           n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+            n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+             n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n0: 200 in 2 places, all below massif's threshold (1.00%)
+ n2: 1832 0x1721AA: alloc::alloc::alloc (alloc.rs:82)
+  n1: 1536 0x171F90: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 1536 0x170E70: <alloc::raw_vec::RawVec<T, A>>::allocate_in (raw_vec.rs:106)
+    n1: 1536 0x170CB4: <alloc::raw_vec::RawVec<T>>::with_capacity (raw_vec.rs:150)
+     n1: 1536 0x178A92: <alloc::vec::Vec<T>>::with_capacity (vec.rs:368)
+      n1: 1536 0x16FF47: mio::sys::unix::epoll::Events::with_capacity (epoll.rs:189)
+       n1: 1536 0x16C6E6: mio::poll::Events::with_capacity (poll.rs:1359)
+        n1: 1536 0x12D650: daemon::main (main.rs:44)
+         n1: 1536 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 1536 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 1536 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 1536 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 1536 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 1536 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+  n1: 296 0x172118: alloc::alloc::exchange_malloc (alloc.rs:192)
+   n0: 296 in 5 places, all below massif's threshold (1.00%)
+ n1: 1507 0x497EFE6: __tzfile_read (in /usr/lib/libc-2.28.so)
+  n1: 1507 0x497E95F: tzset_internal (in /usr/lib/libc-2.28.so)
+   n1: 1507 0x497EBA8: __tz_convert (in /usr/lib/libc-2.28.so)
+    n1: 1507 0x152705: time::sys::inner::time_to_local_tm (sys.rs:433)
+     n1: 1507 0x14C717: time::at (lib.rs:419)
+      n1: 1507 0x14C782: time::now (lib.rs:426)
+       n1: 1507 0x148F16: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:96)
+        n1: 1507 0x17D2CE: log::__private_api_log (lib.rs:1232)
+         n1: 1507 0x12CFDE: daemon::main (main.rs:36)
+          n1: 1507 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+           n1: 1507 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+            n1: 1507 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+             n1: 1507 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+              n1: 1507 0x12A297: std::rt::lang_start (rt.rs:74)
+               n0: 1507 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 1024 0x21B8E5: std::io::stdio::stdout (alloc.rs:82)
+  n1: 1024 0x21C746: std::io::stdio::_print (stdio.rs:694)
+   n1: 1024 0x149125: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:94)
+    n1: 1024 0x17D2CE: log::__private_api_log (lib.rs:1232)
+     n1: 1024 0x12CFDE: daemon::main (main.rs:36)
+      n1: 1024 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+       n1: 1024 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+        n1: 1024 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+         n1: 1024 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+          n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+           n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 983 in 35 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=55
+#-----------
+time=6390631
+mem_heap_B=23565
+mem_heap_extra_B=475
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=6441811
+mem_heap_B=23627
+mem_heap_extra_B=517
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=6498172
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=6552403
+mem_heap_B=27952
+mem_heap_extra_B=640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=6600381
+mem_heap_B=28057
+mem_heap_extra_B=679
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=6663497
+mem_heap_B=23565
+mem_heap_extra_B=475
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=6717601
+mem_heap_B=23627
+mem_heap_extra_B=517
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=6773962
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=6827345
+mem_heap_B=27952
+mem_heap_extra_B=640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=6875323
+mem_heap_B=28057
+mem_heap_extra_B=679
+mem_stacks_B=0
+heap_tree=detailed
+n5: 28057 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 22728 0x13FD6A: alloc::alloc::alloc (alloc.rs:82)
+  n3: 22728 0x13FBD0: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 14336 0x12278E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 14336 0x12125D: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 14336 0x122A28: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 14336 0x13A566: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 14336 0x137636: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 14336 0x12CB50: daemon::main (main.rs:31)
+         n1: 14336 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 14336 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 14336 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 14336 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 14336 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 14336 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n2: 8192 0x12223E: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized_internal (table.rs:705)
+    n1: 4096 0x1214AD: <std::collections::hash::table::RawTable<K, V>>::new_internal (table.rs:748)
+     n1: 4096 0x122B98: <std::collections::hash::table::RawTable<K, V>>::new (table.rs:765)
+      n1: 4096 0x13A466: <std::collections::hash::map::HashMap<K, V, S>>::with_capacity_and_hasher (map.rs:789)
+       n1: 4096 0x137696: <std::collections::hash::map::HashMap<K, V>>::with_capacity (map.rs:722)
+        n1: 4096 0x12CB2D: daemon::main (main.rs:30)
+         n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+    n1: 4096 0x121D58: <std::collections::hash::table::RawTable<K, V>>::new_uninitialized (table.rs:721)
+     n1: 4096 0x128976: <std::collections::hash::table::RawTable<K, V> as core::clone::Clone>::clone (table.rs:1090)
+      n1: 4096 0x133389: <std::collections::hash::map::HashMap<K, V, S> as core::clone::Clone>::clone (map.rs:420)
+       n1: 4096 0x12E994: daemon::main (main.rs:95)
+        n1: 4096 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+         n1: 4096 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+          n1: 4096 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+           n1: 4096 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+            n1: 4096 0x12A297: std::rt::lang_start (rt.rs:74)
+             n0: 4096 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+   n0: 200 in 2 places, all below massif's threshold (1.00%)
+ n2: 1832 0x1721AA: alloc::alloc::alloc (alloc.rs:82)
+  n1: 1536 0x171F90: <alloc::alloc::Global as core::alloc::Alloc>::alloc (alloc.rs:158)
+   n1: 1536 0x170E70: <alloc::raw_vec::RawVec<T, A>>::allocate_in (raw_vec.rs:106)
+    n1: 1536 0x170CB4: <alloc::raw_vec::RawVec<T>>::with_capacity (raw_vec.rs:150)
+     n1: 1536 0x178A92: <alloc::vec::Vec<T>>::with_capacity (vec.rs:368)
+      n1: 1536 0x16FF47: mio::sys::unix::epoll::Events::with_capacity (epoll.rs:189)
+       n1: 1536 0x16C6E6: mio::poll::Events::with_capacity (poll.rs:1359)
+        n1: 1536 0x12D650: daemon::main (main.rs:44)
+         n1: 1536 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+          n1: 1536 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+           n1: 1536 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+            n1: 1536 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+             n1: 1536 0x12A297: std::rt::lang_start (rt.rs:74)
+              n0: 1536 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+  n1: 296 0x172118: alloc::alloc::exchange_malloc (alloc.rs:192)
+   n0: 296 in 5 places, all below massif's threshold (1.00%)
+ n1: 1507 0x497EFE6: __tzfile_read (in /usr/lib/libc-2.28.so)
+  n1: 1507 0x497E95F: tzset_internal (in /usr/lib/libc-2.28.so)
+   n1: 1507 0x497EBA8: __tz_convert (in /usr/lib/libc-2.28.so)
+    n1: 1507 0x152705: time::sys::inner::time_to_local_tm (sys.rs:433)
+     n1: 1507 0x14C717: time::at (lib.rs:419)
+      n1: 1507 0x14C782: time::now (lib.rs:426)
+       n1: 1507 0x148F16: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:96)
+        n1: 1507 0x17D2CE: log::__private_api_log (lib.rs:1232)
+         n1: 1507 0x12CFDE: daemon::main (main.rs:36)
+          n1: 1507 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+           n1: 1507 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+            n1: 1507 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+             n1: 1507 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+              n1: 1507 0x12A297: std::rt::lang_start (rt.rs:74)
+               n0: 1507 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n1: 1024 0x21B8E5: std::io::stdio::stdout (alloc.rs:82)
+  n1: 1024 0x21C746: std::io::stdio::_print (stdio.rs:694)
+   n1: 1024 0x149125: <loggify::loggify::Loggify as log::Log>::log (loggify.rs:94)
+    n1: 1024 0x17D2CE: log::__private_api_log (lib.rs:1232)
+     n1: 1024 0x12CFDE: daemon::main (main.rs:36)
+      n1: 1024 0x12A2BE: std::rt::lang_start::{{closure}} (rt.rs:74)
+       n1: 1024 0x2251A1: std::panicking::try::do_call (rt.rs:59)
+        n1: 1024 0x233A38: __rust_maybe_catch_panic (lib.rs:102)
+         n1: 1024 0x225B72: std::rt::lang_start_internal (panicking.rs:286)
+          n1: 1024 0x12A297: std::rt::lang_start (rt.rs:74)
+           n0: 1024 0x1300F8: main (in /home/lholznagel/dev/lholznagel/rust-dns/target/debug/daemon)
+ n0: 966 in 35 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=65
+#-----------
+time=6938439
+mem_heap_B=23565
+mem_heap_extra_B=475
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=6989619
+mem_heap_B=23627
+mem_heap_extra_B=517
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=7045980
+mem_heap_B=27790
+mem_heap_extra_B=554
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=7099522
+mem_heap_B=27952
+mem_heap_extra_B=640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=7147500
+mem_heap_B=28057
+mem_heap_extra_B=679
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=7210616
+mem_heap_B=23565
+mem_heap_extra_B=475
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=7309884
+mem_heap_B=23545
+mem_heap_extra_B=455
+mem_stacks_B=0
+heap_tree=empty
