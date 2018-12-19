@@ -30,7 +30,7 @@ fn main() -> Result<(), Error> {
     let mut pending_requests: HashMap<u16, Request> = HashMap::with_capacity(16);
     let mut known_addresses: HashMap<String, Vec<ResourceRecord>> = HashMap::with_capacity(128);
 
-    loggify::Loggify::init_with_level(log::Level::Trace)?;
+    loggify::Loggify::init_with_level(log::Level::Debug)?;
 
     let config = config::Config::load(String::from("./daemon/config.sample.yml"))?;
     info!("Using the following servers: {:?}", config.servers);
@@ -40,8 +40,8 @@ fn main() -> Result<(), Error> {
     let poll = Poll::new()?;
     poll.register(&server, SERVER, Ready::all(), PollOpt::edge())?;
 
-    let mut buffer = [0; 256];
-    let mut events = Events::with_capacity(128);
+    let mut buffer = [0; 512];
+    let mut events = Events::with_capacity(32);
 
     loop {
         poll.poll(&mut events, Some(Duration::from_millis(100)))?;
