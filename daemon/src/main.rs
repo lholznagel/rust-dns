@@ -2,13 +2,13 @@ mod config;
 
 use failure::Error;
 use log::{debug, info};
-use mio::{Events, Ready, Poll, PollOpt, Token};
 use mio::net::UdpSocket;
-use std::time::Duration;
-use std::net::SocketAddr;
+use mio::{Events, Poll, PollOpt, Ready, Token};
 use std::collections::HashMap;
+use std::net::SocketAddr;
+use std::time::Duration;
 
-use rdns_proto::{DNS, ResourceRecord};
+use rdns_proto::{ResourceRecord, DNS};
 
 const SERVER: Token = Token(0);
 
@@ -16,16 +16,17 @@ const SERVER: Token = Token(0);
 enum RequestState {
     Added,
     ReadyToSend,
-    WaitingForExternalServer
+    WaitingForExternalServer,
 }
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 struct Request {
     pub requester: SocketAddr,
     pub state: RequestState,
-    pub dns: DNS
+    pub dns: DNS,
 }
 
+#[allow(clippy::map_entry)]
 fn main() -> Result<(), Error> {
     let mut pending_requests: HashMap<u16, Request> = HashMap::with_capacity(16);
     let mut known_addresses: HashMap<String, Vec<ResourceRecord>> = HashMap::with_capacity(128);
@@ -55,40 +56,48 @@ fn main() -> Result<(), Error> {
                         if pending_requests.contains_key(&dns.id) {
                             debug!("DNS request exists");
                             if !dns.resource_records.is_empty() {
-                                let request = pending_requests.get(&dns.id).unwrap();
-                                known_addresses.insert(dns.questions[0].qname.to_string(), dns.resource_records.clone());
+                                let request = &pending_requests[&dns.id];
+                                known_addresses.insert(
+                                    dns.questions[0].qname.to_string(),
+                                    dns.resource_records.clone(),
+                                );
 
-                                pending_requests.insert(dns.id, Request {
-                                    dns,
-                                    state: RequestState::ReadyToSend,
-                                    requester: request.requester
-                                });
+                                pending_requests.insert(
+                                    dns.id,
+                                    Request {
+                                        dns,
+                                        state: RequestState::ReadyToSend,
+                                        requester: request.requester,
+                                    },
+                                );
                             }
-                        } else {
-                            if known_addresses.contains_key(&dns.questions[0].qname) {
-                                debug!("Cache Hit");
-                                let mut dns = dns;
-                                let address = known_addresses.get(&dns.questions[0].qname).unwrap();
-                                dns.resource_records = address.to_vec();
-                                dns.ancount = address.len() as u16;
+                        } else if known_addresses.contains_key(&dns.questions[0].qname) {
+                            debug!("Cache Hit");
+                            let mut dns = dns;
+                            let address = &known_addresses[&dns.questions[0].qname];
+                            dns.resource_records = address.to_vec();
+                            dns.ancount = address.len() as u16;
 
-                                pending_requests.insert(dns.id, Request {
+                            pending_requests.insert(
+                                dns.id,
+                                Request {
                                     requester: addr,
                                     state: RequestState::ReadyToSend,
-                                    dns
-                                });
-                            } else {
-                                debug!("Cache Miss");
-                                debug!("Adding new DNS request");
-                                pending_requests.insert(dns.id, Request {
+                                    dns,
+                                },
+                            );
+                        } else {
+                            debug!("Cache Miss");
+                            debug!("Adding new DNS request");
+                            pending_requests.insert(
+                                dns.id,
+                                Request {
                                     requester: addr,
                                     state: RequestState::Added,
-                                    dns
-                                });
-                            }
+                                    dns,
+                                },
+                            );
                         }
-
-                        buffer = [0; 256];
                     }
 
                     if event.readiness().is_writable() {
@@ -105,19 +114,25 @@ fn main() -> Result<(), Error> {
                                     server_addr.push_str(":53");
 
                                     debug!("Contacting {:?}", server_addr);
-                                    server.send_to(&value.dns.clone().build(), &server_addr.parse()?)?;
+                                    server.send_to(
+                                        &value.dns.clone().build(),
+                                        &server_addr.parse()?,
+                                    )?;
                                 }
 
-                                pending_requests.insert(key, Request {
-                                    dns: value.dns,
-                                    state: RequestState::WaitingForExternalServer,
-                                    requester: value.requester,
-                                });
+                                pending_requests.insert(
+                                    key,
+                                    Request {
+                                        dns: value.dns,
+                                        state: RequestState::WaitingForExternalServer,
+                                        requester: value.requester,
+                                    },
+                                );
                             }
                         }
                     }
-                },
-                _ => unreachable!()
+                }
+                _ => unreachable!(),
             }
         }
     }

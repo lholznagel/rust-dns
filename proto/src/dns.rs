@@ -15,12 +15,12 @@ pub struct Question {
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct ResourceRecord {
-    name: String,
-    rtype: QType,
-    rclass: QClass,
-    ttl: u32,
-    rdlength: u16,
-    rdata: Vec<u8>,
+    pub name: String,
+    pub rtype: QType,
+    pub rclass: QClass,
+    pub ttl: u32,
+    pub rdlength: u16,
+    pub rdata: Vec<u8>,
 }
 
 #[derive(Clone, Debug, Default, Hash, Eq, PartialEq)]
