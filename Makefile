@@ -7,3 +7,8 @@ dig:
 profile:
 	cargo build
 	valgrind --tool=massif target/debug/daemon
+
+test:
+	rustup run stable cargo test
+	rustup run beta cargo test
+	rustup run nightly cargo test

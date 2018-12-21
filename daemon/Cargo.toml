@@ -1,5 +1,5 @@
 [package]
-name = "daemon"
+name = "rdns_daemon"
 version = "0.1.0"
 authors = ["lholznagel <contact@lholznagel.info>"]
 edition = "2018"

@@ -204,7 +204,7 @@ impl DNS {
         let mut position_question = writer.position();
         let writer = writer.write_vec(questions);
 
-        if self.ancount >= 1 {
+        if !self.resource_records.is_empty() {
             let mut responses = Vec::new();
             for resource in self.resource_records {
                 let mut writer = Writer::new()

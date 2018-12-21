@@ -26,7 +26,6 @@ struct Request {
     pub dns: DNS,
 }
 
-#[allow(clippy::map_entry)]
 fn main() -> Result<(), Error> {
     let mut pending_requests: HashMap<u16, Request> = HashMap::with_capacity(16);
     let mut known_addresses: HashMap<String, Vec<ResourceRecord>> = HashMap::with_capacity(128);
@@ -53,57 +52,49 @@ fn main() -> Result<(), Error> {
                         let (num_recv, addr) = server.recv_from(&mut buffer)?;
                         let dns = DNS::parse(buffer[..num_recv].to_vec())?;
 
-                        if pending_requests.contains_key(&dns.id) {
-                            debug!("DNS request exists");
-                            if !dns.resource_records.is_empty() {
-                                let request = &pending_requests[&dns.id];
-                                known_addresses.insert(
-                                    dns.questions[0].qname.to_string(),
-                                    dns.resource_records.clone(),
-                                );
-
-                                pending_requests.insert(
-                                    dns.id,
-                                    Request {
-                                        dns,
-                                        state: RequestState::ReadyToSend,
-                                        requester: request.requester,
-                                    },
-                                );
-                            }
-                        } else if known_addresses.contains_key(&dns.questions[0].qname) {
+                        if known_addresses.contains_key(&dns.questions[0].qname) {
                             debug!("Cache Hit");
-                            let mut dns = dns;
+                            let mut dns = dns.clone();
                             let address = &known_addresses[&dns.questions[0].qname];
                             dns.resource_records = address.to_vec();
-                            dns.ancount = address.len() as u16;
 
                             pending_requests.insert(
                                 dns.id,
                                 Request {
+                                    dns,
                                     requester: addr,
                                     state: RequestState::ReadyToSend,
-                                    dns,
-                                },
-                            );
-                        } else {
-                            debug!("Cache Miss");
-                            debug!("Adding new DNS request");
-                            pending_requests.insert(
-                                dns.id,
-                                Request {
-                                    requester: addr,
-                                    state: RequestState::Added,
-                                    dns,
                                 },
                             );
                         }
+
+                        pending_requests
+                            .entry(dns.id)
+                            .and_modify(|e| {
+                                let dns = dns.clone();
+                                if !dns.resource_records.is_empty() {
+                                    e.state = RequestState::ReadyToSend;
+                                    e.dns.resource_records = dns.resource_records.to_vec();
+
+                                    known_addresses.insert(
+                                        dns.questions[0].qname.to_string(),
+                                        dns.resource_records.clone(),
+                                    );
+                                }
+                            })
+                            .or_insert(Request {
+                                dns,
+                                state: RequestState::Added,
+                                requester: addr,
+                            });
                     }
 
                     if event.readiness().is_writable() {
+                        println!("2");
                         for (key, value) in pending_requests.clone() {
+                            println!("3 {:?}", value);
                             if value.state == RequestState::ReadyToSend {
-                                debug!("Sending complete DNS");
+                                debug!("Answering query");
                                 server.send_to(&value.dns.build(), &value.requester)?;
                                 pending_requests.remove(&key);
                             } else if value.state == RequestState::Added {
