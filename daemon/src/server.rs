@@ -24,7 +24,7 @@ pub struct Request {
 pub struct ServerHandler {
     pub pending_requests: HashMap<u16, Request>,
     pub known_addresses: HashMap<String, Vec<ResourceRecord>>,
-    pub last_checked: SystemTime
+    pub last_checked: SystemTime,
 }
 
 impl ServerHandler {
@@ -32,7 +32,7 @@ impl ServerHandler {
         Self {
             pending_requests: HashMap::with_capacity(16),
             known_addresses: HashMap::with_capacity(128),
-            last_checked: SystemTime::now()
+            last_checked: SystemTime::now(),
         }
     }
 
@@ -40,7 +40,12 @@ impl ServerHandler {
         for (key, value) in self.known_addresses.clone() {
             let mut updated_resources = Vec::new();
             for resource in value {
-                if resource.ttl - self.last_checked.elapsed()?.as_secs() as u32 > 0 {
+                let ttl = resource
+                    .ttl
+                    .checked_sub(self.last_checked.elapsed()?.as_secs() as u32)
+                    .unwrap_or(0);
+
+                if ttl > 0 {
                     updated_resources.push(ResourceRecord {
                         ttl: resource.ttl - self.last_checked.elapsed()?.as_secs() as u32,
                         ..resource.clone()
@@ -48,7 +53,8 @@ impl ServerHandler {
                 }
             }
 
-            self.known_addresses.insert(key.to_string(), updated_resources);
+            self.known_addresses
+                .insert(key.to_string(), updated_resources);
         }
         self.last_checked = SystemTime::now();
         Ok(())
@@ -56,48 +62,37 @@ impl ServerHandler {
 
     pub fn read(&mut self, addr: SocketAddr, dns: DNS) -> Result<(), Error> {
         if self.known_addresses.contains_key(&dns.questions[0].qname) {
+            debug!("Cache hit");
             let mut dns = dns.clone();
             let address = &self.known_addresses[&dns.questions[0].qname];
             dns.resource_records = address.to_vec();
+        }
 
+        if dns.resource_records.is_empty() {
+            debug!("Adding new request");
             self.pending_requests.insert(
                 dns.id,
                 Request {
-                    dns,
+                    dns: dns.clone(),
+                    state: RequestState::Added,
                     requester: addr,
-                    state: RequestState::ReadyToSend,
                 },
             );
-        }
-
-        // TODO: validate
-        if !dns.resource_records.is_empty() {
+        } else {
             self.known_addresses.insert(
                 dns.questions[0].qname.to_string(),
                 dns.resource_records.clone(),
             );
         }
 
-        self.pending_requests
-            .entry(dns.id)
-            .and_modify(|e| {
+        self.pending_requests.entry(dns.id).and_modify(|e| {
+            if !dns.resource_records.is_empty() {
                 let dns = dns.clone();
-                if !dns.resource_records.is_empty() {
-                    e.state = RequestState::ReadyToSend;
-                    e.dns.resource_records = dns.resource_records.to_vec();
+                e.state = RequestState::ReadyToSend;
+                e.dns.resource_records = dns.resource_records.to_vec();
+            }
+        });
 
-                    // TODO: validate
-                    /*self.known_addresses.insert(
-                        dns.questions[0].qname.to_string(),
-                        dns.resource_records.clone(),
-                    );*/
-                }
-            })
-            .or_insert(Request {
-                dns,
-                state: RequestState::Added,
-                requester: addr,
-            });
         Ok(())
     }
 
@@ -140,7 +135,7 @@ impl ServerHandler {
 mod tests {
     use super::*;
 
-    use rdns_proto::{QType, QClass, Question};
+    use rdns_proto::{QClass, QType, Question};
 
     #[test]
     pub fn test_read_query() {
@@ -162,14 +157,56 @@ mod tests {
             questions: vec![Question {
                 qname: String::from("www.google.de"),
                 qtype: QType::A,
-                qclass: QClass::IN
+                qclass: QClass::IN,
             }],
-            resource_records: Vec::new()
+            resource_records: Vec::new(),
         };
 
-        server_handler.read("0.0.0.0:1337".parse().unwrap(), dns).unwrap();
+        server_handler
+            .read("0.0.0.0:1337".parse().unwrap(), dns)
+            .unwrap();
 
         assert!(server_handler.pending_requests.len() == 1);
         assert!(server_handler.known_addresses.len() == 0);
+    }
+
+    #[test]
+    pub fn test_read_response() {
+        let mut server_handler = ServerHandler::new();
+        let dns = DNS {
+            id: 13470,
+            qr: 1,
+            opcode: 0,
+            aa: 0,
+            tc: 0,
+            rd: 1,
+            ra: 1,
+            z: 0,
+            rcode: 0,
+            qdcount: 1,
+            ancount: 1,
+            nscount: 0,
+            arcount: 0,
+            questions: vec![Question {
+                qname: String::from("www.google.de"),
+                qtype: QType::A,
+                qclass: QClass::IN,
+            }],
+            resource_records: vec![ResourceRecord {
+                name: String::from("www.google.de"),
+                rtype: QType::A,
+                rclass: QClass::IN,
+                ttl: 238,
+                rdlength: 4,
+                rdata: vec![172, 217, 168, 195],
+            }],
+        };
+
+        server_handler
+            .read("0.0.0.0:1337".parse().unwrap(), dns)
+            .unwrap();
+
+        assert!(server_handler.pending_requests.len() == 0);
+        assert!(server_handler.known_addresses.len() == 1);
     }
 }
