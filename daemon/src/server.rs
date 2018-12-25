@@ -53,8 +53,12 @@ impl ServerHandler {
                 }
             }
 
-            self.known_addresses
-                .insert(key.to_string(), updated_resources);
+            if updated_resources.is_empty() {
+                self.known_addresses.remove(&key);
+            } else {
+                self.known_addresses
+                    .insert(key.to_string(), updated_resources);
+            }
         }
         self.last_checked = SystemTime::now();
         Ok(())
@@ -167,7 +171,7 @@ mod tests {
             .unwrap();
 
         assert!(server_handler.pending_requests.len() == 1);
-        assert!(server_handler.known_addresses.len() == 0);
+        assert!(server_handler.known_addresses.is_empty());
     }
 
     #[test]
@@ -206,7 +210,53 @@ mod tests {
             .read("0.0.0.0:1337".parse().unwrap(), dns)
             .unwrap();
 
-        assert!(server_handler.pending_requests.len() == 0);
+        assert!(server_handler.pending_requests.is_empty());
         assert!(server_handler.known_addresses.len() == 1);
+    }
+
+    #[test]
+    pub fn test_cache_invalidates() {
+        use std::thread;
+        use std::time::Duration;
+
+        let mut server_handler = ServerHandler::new();
+        let dns = DNS {
+            id: 13470,
+            qr: 1,
+            opcode: 0,
+            aa: 0,
+            tc: 0,
+            rd: 1,
+            ra: 1,
+            z: 0,
+            rcode: 0,
+            qdcount: 1,
+            ancount: 1,
+            nscount: 0,
+            arcount: 0,
+            questions: vec![Question {
+                qname: String::from("www.google.de"),
+                qtype: QType::A,
+                qclass: QClass::IN,
+            }],
+            resource_records: vec![ResourceRecord {
+                name: String::from("www.google.de"),
+                rtype: QType::A,
+                rclass: QClass::IN,
+                ttl: 1,
+                rdlength: 4,
+                rdata: vec![172, 217, 168, 195],
+            }],
+        };
+
+        server_handler
+            .read("0.0.0.0:1337".parse().unwrap(), dns)
+            .unwrap();
+
+        thread::sleep(Duration::from_secs(1));
+        server_handler.validate_ttl().unwrap();
+
+        assert!(server_handler.pending_requests.is_empty());
+        assert!(server_handler.known_addresses.is_empty());
     }
 }
