@@ -4,9 +4,9 @@ mod server;
 use crate::server::ServerHandler;
 
 use failure::Error;
-use log::info;
-use mio::{Events, Poll, PollOpt, Ready, Token};
+use log::debug;
 use mio::net::UdpSocket;
+use mio::{Events, Poll, PollOpt, Ready, Token};
 use std::time::Duration;
 
 use rdns_proto::DNS;
@@ -19,9 +19,9 @@ fn main() -> Result<(), Error> {
     loggify::Loggify::init_with_level(log::Level::Debug)?;
 
     let config = config::Config::load(String::from("./daemon/config.sample.yml"))?;
-    info!("Using the following servers: {:?}", config.servers);
+    debug!("Config: {:?}", config);
 
-    let server = UdpSocket::bind(&"0.0.0.0:1337".parse()?)?;
+    let server = UdpSocket::bind(&config.listen_address)?;
 
     let poll = Poll::new()?;
     poll.register(&server, SERVER, Ready::all(), PollOpt::edge())?;
@@ -45,7 +45,7 @@ fn main() -> Result<(), Error> {
 
                     if event.readiness().is_writable() {
                         let (response, addrs) = server_handler.write(config.servers.clone())?;
-                        
+
                         for addr in addrs {
                             server.send_to(&response, &addr)?;
                         }
