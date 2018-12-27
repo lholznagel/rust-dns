@@ -28,12 +28,18 @@ pub struct ServerHandler {
 }
 
 impl ServerHandler {
-    pub fn new() -> Self {
-        Self {
+    pub fn new(hosts: HashMap<String, Vec<ResourceRecord>>) -> Self {
+        let mut instance = Self {
             pending_requests: HashMap::with_capacity(16),
             known_addresses: HashMap::with_capacity(128),
             last_checked: SystemTime::now(),
+        };
+
+        for (key, value) in hosts {
+            instance.known_addresses.insert(key, value);
         }
+
+        instance
     }
 
     pub fn validate_ttl(&mut self) -> Result<(), Error> {
@@ -143,7 +149,7 @@ mod tests {
 
     #[test]
     pub fn test_read_query() {
-        let mut server_handler = ServerHandler::new();
+        let mut server_handler = ServerHandler::new(HashMap::new());
         let dns = DNS {
             id: 13470,
             qr: 0,
@@ -176,7 +182,7 @@ mod tests {
 
     #[test]
     pub fn test_read_response() {
-        let mut server_handler = ServerHandler::new();
+        let mut server_handler = ServerHandler::new(HashMap::new());
         let dns = DNS {
             id: 13470,
             qr: 1,
@@ -219,7 +225,7 @@ mod tests {
         use std::thread;
         use std::time::Duration;
 
-        let mut server_handler = ServerHandler::new();
+        let mut server_handler = ServerHandler::new(HashMap::new());
         let dns = DNS {
             id: 13470,
             qr: 1,

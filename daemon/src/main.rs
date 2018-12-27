@@ -14,11 +14,10 @@ use rdns_proto::DNS;
 const SERVER: Token = Token(0);
 
 fn main() -> Result<(), Error> {
-    let mut server_handler = ServerHandler::new();
-
     loggify::Loggify::init_with_level(log::Level::Debug)?;
 
     let config = config::Config::load(String::from("./daemon/config.sample.yml"))?;
+    let mut server_handler = ServerHandler::new(config.hosts.clone());
     debug!("Config: {:?}", config);
 
     let server = UdpSocket::bind(&config.listen_address)?;
