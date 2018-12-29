@@ -23,7 +23,18 @@ impl Config {
         let docs = YamlLoader::load_from_str(&contents)?;
         let docs = &docs[0];
 
-        let hosts = Config::get_hosts(docs)?;
+        let mut hosts = HashMap::new();
+
+        let hosts_file = Config::get_hosts_file(docs)?;
+        for (key, value) in hosts_file {
+            hosts.insert(key, value);
+        }
+
+        let hosts_config = Config::get_hosts_config(docs)?;
+        for (key, value) in hosts_config {
+            hosts.insert(key, value);
+        }
+
         let listen_address = Config::get_listen_addr(docs)?;
         let servers = Config::get_servers(docs)?;
 
@@ -34,7 +45,7 @@ impl Config {
         })
     }
 
-    fn get_hosts(docs: &Yaml) -> Result<HashMap<String, Vec<ResourceRecord>>, Error> {
+    fn get_hosts_file(docs: &Yaml) -> Result<HashMap<String, Vec<ResourceRecord>>, Error> {
         let addr = docs["load_hosts_file"].as_bool().unwrap_or(false);
         let mut hosts = HashMap::new();
 
@@ -70,6 +81,52 @@ impl Config {
                             splitted.last().unwrap().to_string(),
                             vec![ResourceRecord {
                                 name: splitted.last().unwrap().to_string(),
+                                rtype: QType::AAAA,
+                                rclass: QClass::IN,
+                                ttl: u32::max_value(), // should be long enough ~136 years
+                                rdlength: ip_octets.len() as u16,
+                                rdata: ip_octets,
+                            }],
+                        );
+                    }
+                }
+            }
+        }
+
+        Ok(hosts)
+    }
+
+    fn get_hosts_config(docs: &Yaml) -> Result<HashMap<String, Vec<ResourceRecord>>, Error> {
+        let has_hosts = !docs["hosts"].is_null();
+        let mut hosts = HashMap::new();
+
+        if has_hosts {
+            for line in docs["hosts"].as_vec().unwrap() {
+                for (key, value) in line.as_hash().unwrap() {
+                    let ip: IpAddr = key.as_str().unwrap().parse()?;
+
+                    if ip.is_ipv4() {
+                        let ip: Ipv4Addr = key.as_str().unwrap().parse()?;
+
+                        hosts.insert(
+                            value.clone().into_string().unwrap(),
+                            vec![ResourceRecord {
+                                name: value.clone().into_string().unwrap(),
+                                rtype: QType::A,
+                                rclass: QClass::IN,
+                                ttl: u32::max_value(), // should be long enough ~136 years
+                                rdlength: 4,
+                                rdata: ip.octets().to_vec(),
+                            }],
+                        );
+                    } else {
+                        let ip: Ipv6Addr = key.as_str().unwrap().parse()?;
+                        let ip_octets = ip.octets().to_vec();
+
+                        hosts.insert(
+                            value.clone().into_string().unwrap(),
+                            vec![ResourceRecord {
+                                name: value.clone().into_string().unwrap(),
                                 rtype: QType::AAAA,
                                 rclass: QClass::IN,
                                 ttl: u32::max_value(), // should be long enough ~136 years

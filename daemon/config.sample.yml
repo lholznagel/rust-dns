@@ -3,6 +3,10 @@ listen-address: 0.0.0.0:1337
 
 load_hosts_file: true
 
+hosts:
+  - 127.0.0.1: dev.local
+  - 127.0.0.1: local
+
 servers:
   - 8.8.8.8
   - 8.8.8.4
