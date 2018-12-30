@@ -139,6 +139,15 @@ impl ServerHandler {
         }
         Ok((response, response_addr))
     }
+
+    pub fn addresses(&self) -> Vec<String> {
+        let mut addresses = Vec::with_capacity(self.known_addresses.len());
+
+        for (key, _) in self.known_addresses.clone() {
+            addresses.push(key);
+        }
+        addresses
+    }
 }
 
 #[cfg(test)]

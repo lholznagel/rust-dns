@@ -7,11 +7,16 @@ use failure::Error;
 use log::debug;
 use mio::net::UdpSocket;
 use mio::{Events, Poll, PollOpt, Ready, Token};
+use mio_uds::UnixListener;
+use std::fs;
+use std::io::{Read, Write};
+use std::path::Path;
 use std::time::Duration;
 
 use rdns_proto::DNS;
 
 const SERVER: Token = Token(0);
+const UNIX: Token = Token(1);
 
 fn main() -> Result<(), Error> {
     loggify::Loggify::init_with_level(log::Level::Debug)?;
@@ -20,10 +25,14 @@ fn main() -> Result<(), Error> {
     let mut server_handler = ServerHandler::new(config.hosts.clone());
     debug!("Config: {:?}", config);
 
+    remove_socket_if_exists(config.socket_path.clone());
+
     let server = UdpSocket::bind(&config.listen_address)?;
+    let unix_socket = UnixListener::bind(&config.socket_path)?;
 
     let poll = Poll::new()?;
     poll.register(&server, SERVER, Ready::all(), PollOpt::edge())?;
+    poll.register(&unix_socket, UNIX, Ready::readable(), PollOpt::edge())?;
 
     let mut buffer = [0; 512];
     let mut events = Events::with_capacity(32);
@@ -50,8 +59,33 @@ fn main() -> Result<(), Error> {
                         }
                     }
                 }
+                UNIX => {
+                    let (mut stream, _) = unix_socket.accept()?.unwrap();
+                    let mut result = Vec::new();
+                    let _ = stream.read_to_end(&mut result);
+
+                    let message = String::from_utf8(result)?;
+                    if message == "addresses" {
+                        let addresses = server_handler.addresses();
+                        let mut response = Vec::new();
+
+                        for address in addresses {
+                            response.append(&mut address.as_bytes().to_vec());
+                            response.push(44u8);
+                        }
+                        stream.write_all(&response)?;
+                    } else {
+                        stream.write_all(b"Unknown command")?;
+                    }
+                }
                 _ => unreachable!(),
             }
         }
+    }
+}
+
+fn remove_socket_if_exists(path: String) {
+    if Path::new(&path).exists() {
+        fs::remove_file(path).unwrap();
     }
 }

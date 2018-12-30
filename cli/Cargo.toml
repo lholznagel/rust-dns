@@ -1,14 +1,11 @@
 [package]
-name = "rdns_daemon"
+name = "rdns_cli"
 version = "0.1.0"
 authors = ["lholznagel <contact@lholznagel.info>"]
 edition = "2018"
 
 [dependencies]
+clap = "2.32.0"
 failure = "0.1.4"
 log = "0.4.6"
 loggify = "1.0.0"
-mio = "0.6.16"
-mio-uds = "0.6.7"
-rdns_proto = { path = "../proto" }
-yaml-rust = "0.4.2"

@@ -12,6 +12,7 @@ pub struct Config {
     pub hosts: HashMap<String, Vec<ResourceRecord>>,
     pub listen_address: SocketAddr,
     pub servers: Vec<String>,
+    pub socket_path: String,
 }
 
 impl Config {
@@ -37,11 +38,13 @@ impl Config {
 
         let listen_address = Config::get_listen_addr(docs)?;
         let servers = Config::get_servers(docs)?;
+        let socket_path = Config::get_socket_path(docs)?;
 
         Ok(Self {
             hosts,
             listen_address,
             servers,
+            socket_path,
         })
     }
 
@@ -168,6 +171,17 @@ impl Config {
         }
         Ok(servers)
     }
+
+    fn get_socket_path(docs: &Yaml) -> Result<String, Error> {
+        if !docs["socket_path"].is_null() {
+            Ok(docs["socket_path"]
+                .clone()
+                .into_string()
+                .unwrap_or_default())
+        } else {
+            Ok(String::new())
+        }
+    }
 }
 
 impl Default for Config {
@@ -176,6 +190,7 @@ impl Default for Config {
             hosts: HashMap::new(),
             listen_address: "0.0.0.0:53".parse().unwrap(),
             servers: Vec::new(),
+            socket_path: String::new(),
         }
     }
 }
