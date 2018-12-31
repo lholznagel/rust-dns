@@ -1,7 +1,9 @@
 mod config;
 mod server;
+mod stats;
 
 use crate::server::ServerHandler;
+use crate::stats::Stats;
 
 use failure::Error;
 use log::debug;
@@ -66,14 +68,7 @@ fn main() -> Result<(), Error> {
 
                     let message = String::from_utf8(result)?;
                     if message == "addresses" {
-                        let addresses = server_handler.addresses();
-                        let mut response = Vec::new();
-
-                        for address in addresses {
-                            response.append(&mut address.as_bytes().to_vec());
-                            response.push(44u8);
-                        }
-                        stream.write_all(&response)?;
+                        stream.write_all(&server_handler.stats())?;
                     } else {
                         stream.write_all(b"Unknown command")?;
                     }

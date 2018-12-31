@@ -10,5 +10,7 @@ log = "0.4.6"
 loggify = "1.0.0"
 mio = "0.6.16"
 mio-uds = "0.6.7"
+prometheus = "0.4.2"
 rdns_proto = { path = "../proto" }
+time = "0.1.41"
 yaml-rust = "0.4.2"

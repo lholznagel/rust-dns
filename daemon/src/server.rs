@@ -1,8 +1,12 @@
+use crate::stats::Stats;
+
 use failure::Error;
 use log::debug;
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::time::SystemTime;
+use time;
+use time::Tm;
 
 use rdns_proto::{ResourceRecord, DNS};
 
@@ -20,11 +24,11 @@ pub struct Request {
     pub dns: DNS,
 }
 
-#[derive(Clone, Debug)]
 pub struct ServerHandler {
     pub pending_requests: HashMap<u16, Request>,
     pub known_addresses: HashMap<String, Vec<ResourceRecord>>,
     pub last_checked: SystemTime,
+    pub stats: Stats,
 }
 
 impl ServerHandler {
@@ -33,6 +37,7 @@ impl ServerHandler {
             pending_requests: HashMap::with_capacity(16),
             known_addresses: HashMap::with_capacity(128),
             last_checked: SystemTime::now(),
+            stats: Stats::default(),
         };
 
         for (key, value) in hosts {
@@ -67,15 +72,22 @@ impl ServerHandler {
             }
         }
         self.last_checked = SystemTime::now();
+        let timespec = time::get_time();
+        self.stats.cache_check(
+            (timespec.sec as f64 + (f64::from(timespec.nsec) / 1000.0 / 1000.0 / 1000.0)) as u64,
+        );
         Ok(())
     }
 
     pub fn read(&mut self, addr: SocketAddr, dns: DNS) -> Result<(), Error> {
         if self.known_addresses.contains_key(&dns.questions[0].qname) {
             debug!("Cache hit");
+            self.stats.inc_cache_hits();
             let mut dns = dns.clone();
             let address = &self.known_addresses[&dns.questions[0].qname];
             dns.resource_records = address.to_vec();
+        } else {
+            self.stats.inc_cache_miss();
         }
 
         if dns.resource_records.is_empty() {
@@ -147,6 +159,10 @@ impl ServerHandler {
             addresses.push(key);
         }
         addresses
+    }
+
+    pub fn stats(&self) -> Vec<u8> {
+        self.stats.metrics()
     }
 }
 
