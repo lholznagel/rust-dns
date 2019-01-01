@@ -2,13 +2,11 @@ use crate::stats::Stats;
 
 use failure::Error;
 use log::debug;
+use rdns_proto::{ResourceRecord, DNS};
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::time::SystemTime;
 use time;
-use time::Tm;
-
-use rdns_proto::{ResourceRecord, DNS};
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub enum RequestState {
@@ -150,15 +148,6 @@ impl ServerHandler {
             }
         }
         Ok((response, response_addr))
-    }
-
-    pub fn addresses(&self) -> Vec<String> {
-        let mut addresses = Vec::with_capacity(self.known_addresses.len());
-
-        for (key, _) in self.known_addresses.clone() {
-            addresses.push(key);
-        }
-        addresses
     }
 
     pub fn stats(&self) -> Vec<u8> {

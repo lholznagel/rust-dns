@@ -3,7 +3,6 @@ mod server;
 mod stats;
 
 use crate::server::ServerHandler;
-use crate::stats::Stats;
 
 use failure::Error;
 use log::debug;
@@ -63,15 +62,9 @@ fn main() -> Result<(), Error> {
                 }
                 UNIX => {
                     let (mut stream, _) = unix_socket.accept()?.unwrap();
-                    let mut result = Vec::new();
-                    let _ = stream.read_to_end(&mut result);
+                    let _ = stream.read_to_end(&mut Vec::new());
 
-                    let message = String::from_utf8(result)?;
-                    if message == "addresses" {
-                        stream.write_all(&server_handler.stats())?;
-                    } else {
-                        stream.write_all(b"Unknown command")?;
-                    }
+                    stream.write_all(&server_handler.stats())?;
                 }
                 _ => unreachable!(),
             }
