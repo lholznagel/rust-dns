@@ -1,14 +1,14 @@
 use prometheus::{Counter, Encoder, Gauge, Opts, Registry, TextEncoder};
 use std::boxed::Box;
 
-pub struct Stats {
+pub struct Metrics {
     cache_hits: Counter,
     cache_miss: Counter,
     last_cache_check: Gauge,
     registry: Registry,
 }
 
-impl Stats {
+impl Metrics {
     pub fn inc_cache_hits(&mut self) {
         self.cache_hits.inc();
     }
@@ -30,7 +30,7 @@ impl Stats {
     }
 }
 
-impl Default for Stats {
+impl Default for Metrics {
     fn default() -> Self {
         let cache_hits_opts = Opts::new("cache_hits", "Counts the cache hits");
         let cache_hits = Counter::with_opts(cache_hits_opts).unwrap();

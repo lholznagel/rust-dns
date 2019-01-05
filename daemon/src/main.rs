@@ -1,6 +1,6 @@
 mod config;
+mod metrics;
 mod server;
-mod stats;
 
 use crate::server::ServerHandler;
 
@@ -64,7 +64,7 @@ fn main() -> Result<(), Error> {
                     let (mut stream, _) = unix_socket.accept()?.unwrap();
                     let _ = stream.read_to_end(&mut Vec::new());
 
-                    stream.write_all(&server_handler.stats())?;
+                    stream.write_all(&server_handler.metrics())?;
                 }
                 _ => unreachable!(),
             }
