@@ -4,8 +4,5 @@ version = "0.1.0"
 authors = ["lholznagel"]
 edition = "2018"
 
-[dependencies]
-failure = "0.1.4"
-
 [dev-dependencies]
-hex = "0.3.2"
+hex = "0.4.2"

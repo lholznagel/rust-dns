@@ -1,79 +1,33 @@
-mod config;
-mod metrics;
+mod error;
 mod server;
 
 use crate::server::ServerHandler;
 
-use failure::Error;
-use log::debug;
-use mio::net::UdpSocket;
-use mio::{Events, Poll, PollOpt, Ready, Token};
-use mio_uds::UnixListener;
-use std::fs;
-use std::io::{Read, Write};
-use std::path::Path;
-use std::time::Duration;
-
+use async_std::net::UdpSocket;
 use rdns_proto::DNS;
+use std::collections::HashMap;
 
-const SERVER: Token = Token(0);
-const UNIX: Token = Token(1);
+#[async_std::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    loggify::Loggify::init_with_level(log::Level::Debug).unwrap();
 
-fn main() -> Result<(), Error> {
-    loggify::Loggify::init_with_level(log::Level::Debug)?;
+    let mut server_handler = ServerHandler::new(HashMap::new());
 
-    let config = config::Config::load(String::from("./daemon/config.sample.yml"))?;
-    let mut server_handler = ServerHandler::new(config.hosts.clone());
-    debug!("Config: {:?}", config);
-
-    remove_socket_if_exists(config.socket_path.clone());
-
-    let server = UdpSocket::bind(&config.listen_address)?;
-    let unix_socket = UnixListener::bind(&config.socket_path)?;
-
-    let poll = Poll::new()?;
-    poll.register(&server, SERVER, Ready::all(), PollOpt::edge())?;
-    poll.register(&unix_socket, UNIX, Ready::readable(), PollOpt::edge())?;
-
-    let mut buffer = [0; 512];
-    let mut events = Events::with_capacity(32);
+    let socket = UdpSocket::bind("127.0.0.1:1337").await?;
+    let mut buf = vec![0u8; 512];
 
     loop {
-        poll.poll(&mut events, Some(Duration::from_millis(100)))?;
-        for event in events.iter() {
-            match event.token() {
-                SERVER => {
-                    server_handler.validate_ttl()?;
+        let (num_recv, addr) = socket.recv_from(&mut buf).await?;
+        let dns = DNS::parse(buf[..num_recv].to_vec()).map_err(|e| {
+            dbg!(e);
+            error::RdnsError::Todo
+        })?;
+        dbg!(&dns);
+        server_handler.read(addr, dns)?;
 
-                    if event.readiness().is_readable() {
-                        let (num_recv, addr) = server.recv_from(&mut buffer)?;
-                        let dns = DNS::parse(buffer[..num_recv].to_vec())?;
-
-                        server_handler.read(addr, dns)?;
-                    }
-
-                    if event.readiness().is_writable() {
-                        let (response, addrs) = server_handler.write(config.servers.clone())?;
-
-                        for addr in addrs {
-                            server.send_to(&response, &addr)?;
-                        }
-                    }
-                }
-                UNIX => {
-                    let (mut stream, _) = unix_socket.accept()?.unwrap();
-                    let _ = stream.read_to_end(&mut Vec::new());
-
-                    stream.write_all(&server_handler.metrics())?;
-                }
-                _ => unreachable!(),
-            }
+        let (response, addrs) = server_handler.write(vec!["8.8.8.8".into(), "8.8.4.4".into()])?;
+        for addr in addrs {
+            socket.send_to(&response, &addr).await?;
         }
-    }
-}
-
-fn remove_socket_if_exists(path: String) {
-    if Path::new(&path).exists() {
-        fs::remove_file(path).unwrap();
     }
 }

@@ -1,6 +1,4 @@
 ---
-socket_path: rdns.sock
-
 listen-address: 0.0.0.0:1337
 
 load_hosts_file: true

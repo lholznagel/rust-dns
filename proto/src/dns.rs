@@ -1,10 +1,16 @@
-use crate::helper::*;
-use crate::qclass::{as_qclass, as_u16 as qclass_as_u16, QClass};
-use crate::qtype::{as_qtype, as_u16 as qtype_as_u16, QType};
-use crate::reader::Reader;
+mod opcode;
+mod rcode;
+
+pub use self::opcode::*;
+pub use self::rcode::*;
+
+use crate::error::*;
+use crate::qclass::{as_u16 as qclass_as_u16, QClass};
+use crate::qtype::{as_u16 as qtype_as_u16, QType};
+use crate::reader::*;
 use crate::writer::Writer;
 
-use failure::Error;
+use std::io::Cursor;
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct Question {
@@ -27,13 +33,13 @@ pub struct ResourceRecord {
 pub struct DNS {
     pub id: u16,
     pub qr: u8,
-    pub opcode: u8,
+    pub opcode: Opcode,
     pub aa: u8,
     pub tc: u8,
     pub rd: u8,
     pub ra: u8,
     pub z: u8,
-    pub rcode: u8,
+    pub rcode: Rcode,
     pub qdcount: u16,
     pub ancount: u16,
     pub nscount: u16, // currently ignored
@@ -43,66 +49,54 @@ pub struct DNS {
 }
 
 impl DNS {
-    pub fn parse(byte_arr: Vec<u8>) -> Result<Self, Error> {
+    pub fn parse(byte_arr: Vec<u8>) -> Result<Self> {
+        let mut protocol = Cursor::new(byte_arr.clone());
+
         let mut reader = Reader::new(&byte_arr);
-        let id = reader.read_u16_be()?;
+        let id = protocol.read_u16()?;
 
-        let parsed_flags = reader.read_u8_as_binary()?;
-        let opcode_bin = [
-            parsed_flags[1],
-            parsed_flags[2],
-            parsed_flags[3],
-            parsed_flags[4],
-        ];
-        let qr = parsed_flags[0];
-        let opcode = four_bit_to_u8(opcode_bin);
-        let aa = parsed_flags[5];
-        let tc = parsed_flags[6];
-        let rd = parsed_flags[7];
+        let flags = protocol.read_binary()?;
+        let qr = flags[0];
+        let opcode = Opcode::from(&flags[1..=4]);
+        let aa = flags[5];
+        let tc = flags[6];
+        let rd = flags[7];
 
-        let parsed_flags2 = reader.read_u8_as_binary()?;
-        let rcode_bin = [
-            parsed_flags2[4],
-            parsed_flags2[5],
-            parsed_flags2[6],
-            parsed_flags2[7],
-        ];
-        let ra = parsed_flags2[0];
+        let flags = protocol.read_binary()?;
+        let ra = flags[0];
+        let rcode = Rcode::from(&flags[4..=7]);
         let z = 0;
-        let rcode = four_bit_to_u8(rcode_bin);
 
-        let qdcount = reader.read_u16_be()?;
-        let ancount = reader.read_u16_be()?;
-        let nscount = reader.read_u16_be()?;
-        let arcount = reader.read_u16_be()?;
+        let qdcount = protocol.read_u16()?;
+        let ancount = protocol.read_u16()?;
+        let nscount = protocol.read_u16()?;
+        let arcount = protocol.read_u16()?;
 
-        let mut questions = Vec::new();
+        let mut questions = Vec::with_capacity(1);
+        for _ in 0..qdcount {
+            let mut domain = Vec::with_capacity(3);
+            let mut qname_length = protocol.read_u8()?;
 
-        let mut question_length = reader.read_u8()?;
-        let mut qname = Vec::new();
-
-        while question_length != 0 {
-            let mut name = reader.read_length(question_length as usize)?;
-            qname.append(&mut name);
-            question_length = reader.read_u8()?;
-
-            if question_length != 0 {
-                qname.push(46);
+            while qname_length != 0 {
+                let qname = protocol.read_length(qname_length as usize)?;
+                domain.push(qname);
+                qname_length = protocol.read_u8()?;
             }
+
+            let qname = String::from_utf8(domain.join(&46)).map_err(DnsParseError::StringParseError)?;
+            let qtype = QType::from(protocol.read_u16()?);
+            let qclass = QClass::from(protocol.read_u16()?);
+
+            questions.push(Question {
+                qname,
+                qtype,
+                qclass,
+            });
         }
-
-        let qname = String::from_utf8(qname)?;
-        let qtype = as_qtype(reader.read_u16_be()?);
-        let qclass = as_qclass(reader.read_u16_be()?);
-
-        questions.push(Question {
-            qname,
-            qtype,
-            qclass,
-        });
 
         let mut resource_records = Vec::new();
         if qr == 1 {
+            dbg!(protocol);
             for _ in 0..ancount {
                 let mut name = Vec::new();
                 let name_offset = reader.read_u8()?;
@@ -127,15 +121,15 @@ impl DNS {
 
                 reader.set_position(currrent_position);
 
-                let rtype = as_qtype(reader.read_u16_be()?);
-                let rclass = as_qclass(reader.read_u16_be()?);
+                let rtype = crate::qtype::as_qtype(reader.read_u16_be()?);
+                let rclass = crate::qclass::as_qclass(reader.read_u16_be()?);
 
                 let ttl = reader.read_u32_be()?;
                 let rdlength = reader.read_u16_be()?;
                 let rdata = reader.read_length(rdlength as usize)?;
 
                 let resource_record = ResourceRecord {
-                    name: String::from_utf8(name)?,
+                    name: String::from_utf8(name).map_err(DnsParseError::StringParseError)?,
                     rtype,
                     rclass,
                     ttl,
@@ -167,12 +161,13 @@ impl DNS {
     }
 
     pub fn build(self) -> Vec<u8> {
-        let opcode = u8_to_four_bit(self.opcode);
+        let opcode: &[u8] = self.opcode.into();
+        //let opcode = u8_to_four_bit(self.opcode);
         let flags = [
             self.qr, opcode[0], opcode[1], opcode[2], opcode[3], self.aa, self.tc, self.rd,
         ];
 
-        let rcode = u8_to_four_bit(self.rcode);
+        let rcode: &[u8] = self.rcode.into();
         let flags2 = [self.ra, 0, 0, 0, rcode[0], rcode[1], rcode[2], rcode[3]];
 
         let writer = Writer::with_capacity(128)
@@ -246,13 +241,13 @@ mod tests {
             DNS {
                 id: 13470,
                 qr: 0,
-                opcode: 0,
+                opcode: Opcode::Query,
                 aa: 0,
                 tc: 0,
                 rd: 1,
                 ra: 0,
                 z: 0,
-                rcode: 0,
+                rcode: Rcode::NoError,
                 qdcount: 1,
                 ancount: 0,
                 nscount: 0,
@@ -278,13 +273,13 @@ mod tests {
             DNS {
                 id: 13470,
                 qr: 1,
-                opcode: 0,
+                opcode: Opcode::Query,
                 aa: 0,
                 tc: 0,
                 rd: 1,
                 ra: 1,
                 z: 0,
-                rcode: 0,
+                rcode: Rcode::NoError,
                 qdcount: 1,
                 ancount: 1,
                 nscount: 0,
@@ -311,13 +306,13 @@ mod tests {
         let vector = DNS {
             id: 13470,
             qr: 0,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 0,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 0,
             nscount: 0,
@@ -341,13 +336,13 @@ mod tests {
         let vector = DNS {
             id: 13470,
             qr: 1,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 1,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 1,
             nscount: 0,
@@ -384,13 +379,13 @@ mod tests {
             DNS {
                 id: 8780,
                 qr: 0,
-                opcode: 0,
+                opcode: Opcode::Query,
                 aa: 0,
                 tc: 0,
                 rd: 1,
                 ra: 0,
                 z: 0,
-                rcode: 0,
+                rcode: Rcode::NoError,
                 qdcount: 1,
                 ancount: 0,
                 nscount: 0,
@@ -416,13 +411,13 @@ mod tests {
             DNS {
                 id: 8780,
                 qr: 1,
-                opcode: 0,
+                opcode: Opcode::Query,
                 aa: 0,
                 tc: 0,
                 rd: 1,
                 ra: 1,
                 z: 0,
-                rcode: 0,
+                rcode: Rcode::NoError,
                 qdcount: 1,
                 ancount: 3,
                 nscount: 0,
@@ -467,13 +462,13 @@ mod tests {
         let vector = DNS {
             id: 8780,
             qr: 0,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 0,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 0,
             nscount: 0,
@@ -497,13 +492,13 @@ mod tests {
         let vector = DNS {
             id: 8780,
             qr: 1,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 1,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 3,
             nscount: 0,
@@ -558,13 +553,13 @@ mod tests {
             DNS {
                 id: 35568,
                 qr: 0,
-                opcode: 0,
+                opcode: Opcode::Query,
                 aa: 0,
                 tc: 0,
                 rd: 1,
                 ra: 0,
                 z: 0,
-                rcode: 0,
+                rcode: Rcode::NoError,
                 qdcount: 1,
                 ancount: 0,
                 nscount: 0,
@@ -590,13 +585,13 @@ mod tests {
             DNS {
                 id: 35568,
                 qr: 1,
-                opcode: 0,
+                opcode: Opcode::Query,
                 aa: 0,
                 tc: 0,
                 rd: 1,
                 ra: 1,
                 z: 0,
-                rcode: 0,
+                rcode: Rcode::NoError,
                 qdcount: 1,
                 ancount: 1,
                 nscount: 0,
@@ -623,13 +618,13 @@ mod tests {
         let vector = DNS {
             id: 35568,
             qr: 0,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 0,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 0,
             nscount: 0,
@@ -653,13 +648,13 @@ mod tests {
         let vector = DNS {
             id: 35568,
             qr: 1,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 1,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 1,
             nscount: 0,

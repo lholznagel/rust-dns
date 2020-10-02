@@ -1,12 +1,10 @@
-use crate::metrics::Metrics;
+use crate::error::*;
 
-use failure::Error;
 use log::debug;
-use rdns_proto::{ResourceRecord, DNS};
+use rdns_proto::*;
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::time::SystemTime;
-use time;
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub enum RequestState {
@@ -26,7 +24,6 @@ pub struct ServerHandler {
     pub pending_requests: HashMap<u16, Request>,
     pub known_addresses: HashMap<String, Vec<ResourceRecord>>,
     pub last_checked: SystemTime,
-    pub metrics: Metrics,
 }
 
 impl ServerHandler {
@@ -35,7 +32,6 @@ impl ServerHandler {
             pending_requests: HashMap::with_capacity(16),
             known_addresses: HashMap::with_capacity(128),
             last_checked: SystemTime::now(),
-            metrics: Metrics::default(),
         };
 
         for (key, value) in hosts {
@@ -45,18 +41,34 @@ impl ServerHandler {
         instance
     }
 
-    pub fn validate_ttl(&mut self) -> Result<(), Error> {
+    pub fn validate_ttl(&mut self) -> Result<()> {
         for (key, value) in self.known_addresses.clone() {
             let mut updated_resources = Vec::new();
             for resource in value {
                 let ttl = resource
                     .ttl
-                    .checked_sub(self.last_checked.elapsed()?.as_secs() as u32)
+                    .checked_sub(
+                        self.last_checked
+                            .elapsed()
+                            .map_err(|e| {
+                                dbg!(e);
+                                RdnsError::Todo
+                            })?
+                            .as_secs() as u32,
+                    )
                     .unwrap_or(0);
 
                 if ttl > 0 {
                     updated_resources.push(ResourceRecord {
-                        ttl: resource.ttl - self.last_checked.elapsed()?.as_secs() as u32,
+                        ttl: resource.ttl
+                            - self
+                                .last_checked
+                                .elapsed()
+                                .map_err(|e| {
+                                    dbg!(e);
+                                    RdnsError::Todo
+                                })?
+                                .as_secs() as u32,
                         ..resource.clone()
                     });
                 }
@@ -70,22 +82,15 @@ impl ServerHandler {
             }
         }
         self.last_checked = SystemTime::now();
-        let timespec = time::get_time();
-        self.metrics.cache_check(
-            (timespec.sec as f64 + (f64::from(timespec.nsec) / 1000.0 / 1000.0 / 1000.0)) as u64,
-        );
         Ok(())
     }
 
-    pub fn read(&mut self, addr: SocketAddr, dns: DNS) -> Result<(), Error> {
+    pub fn read(&mut self, addr: SocketAddr, dns: DNS) -> Result<()> {
         if self.known_addresses.contains_key(&dns.questions[0].qname) {
             debug!("Cache hit");
-            self.metrics.inc_cache_hits();
             let mut dns = dns.clone();
             let address = &self.known_addresses[&dns.questions[0].qname];
             dns.resource_records = address.to_vec();
-        } else {
-            self.metrics.inc_cache_miss();
         }
 
         if dns.resource_records.is_empty() {
@@ -116,7 +121,7 @@ impl ServerHandler {
         Ok(())
     }
 
-    pub fn write(&mut self, servers: Vec<String>) -> Result<(Vec<u8>, Vec<SocketAddr>), Error> {
+    pub fn write(&mut self, servers: Vec<String>) -> Result<(Vec<u8>, Vec<SocketAddr>)> {
         let mut response = Vec::new();
         let mut response_addr: Vec<SocketAddr> = Vec::with_capacity(servers.len());
 
@@ -134,7 +139,7 @@ impl ServerHandler {
                     server_addr.push_str(":53");
 
                     response = value.dns.clone().build();
-                    response_addr.push(server_addr.parse()?);
+                    response_addr.push(server_addr.parse().unwrap());
                 }
 
                 self.pending_requests.insert(
@@ -148,10 +153,6 @@ impl ServerHandler {
             }
         }
         Ok((response, response_addr))
-    }
-
-    pub fn metrics(&self) -> Vec<u8> {
-        self.metrics.metrics()
     }
 }
 
@@ -167,13 +168,13 @@ mod tests {
         let dns = DNS {
             id: 13470,
             qr: 0,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 0,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 0,
             nscount: 0,
@@ -200,13 +201,13 @@ mod tests {
         let dns = DNS {
             id: 13470,
             qr: 1,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 1,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 1,
             nscount: 0,
@@ -243,13 +244,13 @@ mod tests {
         let dns = DNS {
             id: 13470,
             qr: 1,
-            opcode: 0,
+            opcode: Opcode::Query,
             aa: 0,
             tc: 0,
             rd: 1,
             ra: 1,
             z: 0,
-            rcode: 0,
+            rcode: Rcode::NoError,
             qdcount: 1,
             ancount: 1,
             nscount: 0,
